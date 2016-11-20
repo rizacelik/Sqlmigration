@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      sqlmigration\\MigrationsSeedings\\": "src/"
+      "sqlmigration\\MigrationsSeedings\\": "src/"
     }
   },
   "version"  :  "1.0.0" , 
