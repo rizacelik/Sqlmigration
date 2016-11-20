@@ -15,12 +15,12 @@ composer require sqlmigration\MigrationsSeedings:"dev-master"
 ### Step 2: Add the Service Provider
 
 
-Open `config/app.php` and, add to `sqlmigration\MigrationsSeedings\SqlMigrationServiceProvider::class`
+Open `config/app.php` and, add to `Sqlmigration\MigrationsSeedings\SqlMigrationServiceProvider::class`
 
 ```
 'providers' => [
      . . .
-     sqlmigration\MigrationsSeedings\SqlMigrationServiceProvider::class,
+     Sqlmigration\MigrationsSeedings\SqlMigrationServiceProvider::class,
 ],
 ```
 
