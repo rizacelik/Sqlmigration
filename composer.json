@@ -1,5 +1,5 @@
 {
-  "name": "sqlmigration/MigrationsSeedings",
+  "name": "Sqlmigration/MigrationsSeedings",
   "description": "Laravel 5* Converts database sql to migrations and Seeding",
   "keywords": ["laravel", "framework", "generator", "migration", "seeding", "build", "builder","sql","convert", "riza celik", "fast migration generator"],
   "license": "MIT",
@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "sqlmigration\\MigrationsSeedings\\": "src/"
+      "Sqlmigration\\MigrationsSeedings\\": "src/"
     }
   },
   "version"  :  "1.0.0" , 
