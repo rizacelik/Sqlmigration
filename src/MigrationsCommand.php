@@ -1,4 +1,4 @@
-<?php namespace sqlmigration\MigrationsSeedings;
+<?php namespace Sqlmigration\MigrationsSeedings;
 
 use Illuminate\Console\Command;
 
