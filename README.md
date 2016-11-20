@@ -9,7 +9,7 @@ Converts database all table sql to migrations and Seeding.
 ### Step 1: Install Through Composer
 
 ```
-composer require Sqlmigration\MigrationsSeedings:"dev-master"
+composer require sqlmigration/migrations-seedings:"dev-master"
 ```
 
 ### Step 2: Add the Service Provider
