@@ -130,7 +130,7 @@ public function down()
  
     public function convert()
     {
-		$downStack = array();
+	$downStack = array();
         $tables = $this->getTables();
 
         foreach ($tables as $key => $value) {
@@ -141,20 +141,20 @@ public function down()
  
             $downStack[] = $value->table_name;
 			
-			$result = DB::table($value->table_name)
-                ->limit(10)
-                ->get()->toArray();
+	    $result = DB::table($value->table_name)
+                         ->limit(10)
+                         ->get()->toArray();
 				
-			$result = array_map(function ($value) {
-				return (array)$value;
-			}, $result);
+	   $result = array_map(function ($value) {
+		return (array)$value;
+	   }, $result);
 			
-			$export = var_export($result, true);
+	    $export = var_export($result, true);
 			
             $down = "Schema::drop('{$value->table_name}');";
-			$has  = "if (!Schema::hasTable('{$value->table_name}')) {". PHP_EOL;
+	    $has  = "if (!Schema::hasTable('{$value->table_name}')) {". PHP_EOL;
             $up   = $has."Schema::create('{$value->table_name}', function(Blueprint $" . "table) {" . PHP_EOL;
-			$insert = $result ? "DB::table('{$value->table_name}')->insert(" . PHP_EOL . $export .");" . PHP_EOL : '';
+	    $insert = $result ? "DB::table('{$value->table_name}')->insert(" . PHP_EOL . $export .");" . PHP_EOL : '';
 
             $tableDescribes = $this->getTableDescribes($value->table_name);
 
@@ -167,15 +167,15 @@ public function down()
                 $numbers  = "";
                 $nullable = $values->IS_NULLABLE == "NO" ? "" : "->nullable()";
 				
-				$time_stamp = strpos($values->COLUMN_DEFAULT, "TIMESTAMP") === false ? false : true;
-				$on_time_stamp = strpos($values->EXTRA, "TIMESTAMP") === false ? false : true;
-				if($time_stamp && $on_time_stamp){
-				    $default  = empty($values->COLUMN_DEFAULT) ? "" : "->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))";
-				}elseif($time_stamp){
-				    $default  = empty($values->COLUMN_DEFAULT) ? "" : "->default(DB::raw('CURRENT_TIMESTAMP'))";
-				}else{
-				   $default  = empty($values->COLUMN_DEFAULT) ? "" : "->default('{$values->COLUMN_DEFAULT}')";
-				}
+		$time_stamp = strpos($values->COLUMN_DEFAULT, "TIMESTAMP") === false ? false : true;
+		$on_time_stamp = strpos($values->EXTRA, "TIMESTAMP") === false ? false : true;
+		if($time_stamp && $on_time_stamp){
+		    $default  = empty($values->COLUMN_DEFAULT) ? "" : "->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))";
+		}elseif($time_stamp){
+		    $default  = empty($values->COLUMN_DEFAULT) ? "" : "->default(DB::raw('CURRENT_TIMESTAMP'))";
+		}else{
+		     $default  = empty($values->COLUMN_DEFAULT) ? "" : "->default('{$values->COLUMN_DEFAULT}')";
+		}
 				               
                 $unsigneds = strpos($values->COLUMN_TYPE, "unsigned") === false ? false : true;
 				$unsigned = '';
@@ -192,13 +192,13 @@ public function down()
                         $method = $unsigneds ? 'unsignedInteger' : 'integer';
                         break;
                     case 'bigint' :
-						$method = $unsigneds ? 'unsignedBigInteger' : 'bigInteger';
+			$method = $unsigneds ? 'unsignedBigInteger' : 'bigInteger';
                         break;
                     case 'medium' :
-						$method = $unsigneds ? 'unsignedMediumInteger' : 'mediumInteger';
+			$method = $unsigneds ? 'unsignedMediumInteger' : 'mediumInteger';
                         break;
                     case 'samllint' :
-						$method = $unsigneds ? 'unsignedSmallInteger' : 'smallInteger';
+			$method = $unsigneds ? 'unsignedSmallInteger' : 'smallInteger';
                         break;
                     case 'char' :
                     case 'varchar' :
@@ -218,7 +218,7 @@ public function down()
                         if ($values->COLUMN_TYPE == 'tinyint(1)') {
                             $method = 'boolean';
                         } else {
-							$method = $unsigneds ? 'unsignedTinyInteger' : 'tinyInteger';
+			    $method = $unsigneds ? 'unsignedTinyInteger' : 'tinyInteger';
                         }
                         break;
                     case 'date':
@@ -239,7 +239,7 @@ public function down()
                 }
                 if ($values->COLUMN_KEY == 'PRI') {
                     $method = 'increments';
-					$unsigned = $unsigneds ? '->unsigned()' : '';
+		    $unsigned = $unsigneds ? '->unsigned()' : '';
                 }
 
                 $up .= "\t$" . "table->{$method}('{$values->COLUMN_NAME}'{$choices}{$numbers}){$nullable}{$default}{$unsigned}{$unique};".PHP_EOL;
@@ -258,20 +258,21 @@ public function down()
         $tableForeigns = $this->getForeignTables();
         if (sizeof($tableForeigns) !== 0) {
             foreach ($tableForeigns as $key => $value) {
-                $up = "Schema::table('{$value->TABLE_NAME}', function(Blueprint $" . "table) {".PHP_EOL;
+		$has  = "if (!Schema::hasTable('{$value->TABLE_NAME}')) {". PHP_EOL;
+                $up = $has."Schema::table('{$value->TABLE_NAME}', function(Blueprint $" . "table) {".PHP_EOL;
 				
                 $foreign = $this->getForeigns($value->TABLE_NAME);
                 $foreigns = $this->getForeignsRule($value->TABLE_NAME);
 			
                 foreach ($foreign as $k => $v) {
                     $up .= "  $" . "table->foreign('{$v->COLUMN_NAME}')" . PHP_EOL . "\t->references('{$v->REFERENCED_COLUMN_NAME}')" . PHP_EOL . "\t->on('{$v->REFERENCED_TABLE_NAME}')".PHP_EOL;
-					if(count($foreigns) > 0){
-						$up .= "\t->onDelete('{$foreigns[0]->DELETE_RULE}')".PHP_EOL;
-						$up .= "\t->onUpdate('{$foreigns[0]->UPDATE_RULE}');".PHP_EOL;
-					}
+			if(count($foreigns) > 0){
+				$up .= "\t->onDelete('{$foreigns[0]->DELETE_RULE}')".PHP_EOL;
+				$up .= "\t->onUpdate('{$foreigns[0]->UPDATE_RULE}');".PHP_EOL;
+			}
                 }
 				
-                $up .= " });" . PHP_EOL . PHP_EOL;
+                $up .= " });\r\n}" . PHP_EOL . PHP_EOL;
                 $this->schema[$value->TABLE_NAME . '_foreign'] = array(
                     'up'   => $up,
                     'down' => ( ! in_array($value->TABLE_NAME, $downStack) ) ? $down : "",
