@@ -47,7 +47,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 //
-// NOTE Migration Created: 2016-11-20 08:21:51
+// NOTE Migration Created: 2016-11-23 06:41:29
 // --------------------------------------------------
  
 class CreateKabakDatabase  extends Migration{
@@ -69,7 +69,7 @@ Schema::create('blog_categories', function(Blueprint $table) {
 	$table->string('slug', 255)->unique();
 	$table->string('description', 255)->nullable();
  });
-
+ 
 DB::table('blog_categories')->insert(
 array (
   0 => 
@@ -328,6 +328,7 @@ Schema::create('users', function(Blueprint $table) {
 // NOTE -- blog_comments_foreign
 // --------------------------------------------------
  
+if (!Schema::hasTable('blog_comments')) {
 Schema::table('blog_comments', function(Blueprint $table) {
   $table->foreign('post_id')
 	->references('id')
@@ -335,12 +336,14 @@ Schema::table('blog_comments', function(Blueprint $table) {
 	->onDelete('CASCADE')
 	->onUpdate('RESTRICT');
  });
+}
 
 
 //
 // NOTE -- blog_post_tag_foreign
 // --------------------------------------------------
  
+if (!Schema::hasTable('blog_post_tag')) {
 Schema::table('blog_post_tag', function(Blueprint $table) {
   $table->foreign('post_id')
 	->references('id')
@@ -353,12 +356,14 @@ Schema::table('blog_post_tag', function(Blueprint $table) {
 	->onDelete('CASCADE')
 	->onUpdate('RESTRICT');
  });
+}
 
 
 //
 // NOTE -- blog_posts_foreign
 // --------------------------------------------------
  
+if (!Schema::hasTable('blog_posts')) {
 Schema::table('blog_posts', function(Blueprint $table) {
   $table->foreign('category_id')
 	->references('id')
@@ -366,6 +371,7 @@ Schema::table('blog_posts', function(Blueprint $table) {
 	->onDelete('CASCADE')
 	->onUpdate('RESTRICT');
  });
+}
 
 
 
