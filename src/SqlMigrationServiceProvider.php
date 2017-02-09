@@ -27,7 +27,7 @@ class SqlMigrationServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['artisan.sql.migration'] = $this->app->share(function($app) {
+       $this->app->singleton('artisan.sql.migration', function($app) {
             return new MigrationsCommand;
         });
 
